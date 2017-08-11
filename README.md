@@ -16,10 +16,10 @@ Project Breakdown:
 * Neopixels
     * Warning for radiation levels over 500 CPM (Blinks with detection)
       * Blinks Blue   (1-99 CPM)
-      * Blinks Green  (100-199 CPM)
-      * Blinks Yellow (200-499 CPM)
-      * Blinks Orange (500-749 CPM)
-      * Blinks Red    (>750 CPM)
+      * Blinks Green  (100-299 CPM)
+      * Blinks Yellow (300-499 CPM)
+      * Blinks Orange (500-699 CPM)
+      * Blinks Red    (>700 CPM)
 * OLED
     * Displays radiation levels
     * CPM - counts per minute
