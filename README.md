@@ -3,8 +3,9 @@ An Adafruit Feather Huzzah with a Feather OLED expansion will be connected to a 
 
 Brian Leschke 2017
  
-- Update 8/10/2017: Formed project idea
-- 
+- Update 8/9/2017: Formed project idea
+- Update 8/11/2017: Geiger Counter built
+-
 
 ## **Overview**
 
