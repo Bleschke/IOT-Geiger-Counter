@@ -22,9 +22,9 @@ Project Breakdown:
       * Blinks Red    (>500 CPM)
 * OLED
     * Displays radiation levels
-    * CPM - counts per minute
-    * CPS - counts per second
-    * uS/hr - microSievert
+      * CPM - counts per minute
+      * CPS - counts per second
+      * uS/hr - microSievert
 * Webpage
     * Displays radiation information
         * Graphs
