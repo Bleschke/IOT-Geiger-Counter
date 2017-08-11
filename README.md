@@ -1,4 +1,4 @@
-# IOT-Geiger-Counter
+# IoT-Geiger-Counter
 An Adafruit Feather Huzzah with a Feather OLED expansion will be connected to a MightyOhm Geiger Counter (kit). The Feather Huzzah is programmed to display uS/hr, CPS, and CPM on both a webpage and the oled screen. 
 
 Brian Leschke 2017
