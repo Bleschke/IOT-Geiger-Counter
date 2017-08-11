@@ -42,6 +42,7 @@ You will need:
 5. Arduino programming software
 6. Python 2.7.x installed on your operating system (used for OTA updates).
 7. FTDI cable (https://www.sparkfun.com/products/9717)
+8. Lithium Ion Battery Pack - optional (http://adafru.it/2011)
 
 
 ### **Usage**
