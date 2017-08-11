@@ -68,7 +68,7 @@ The following libraries are required for this project:
 ## **Uploading**
 
 The code can be uploaded to the ESP8266 in two ways, either by OTA (over-the-air) updates or a microusb cable (hardwire) connection.
-Users will need to initially upload the code using an FTDI cable.
+Users will need to initially upload the code using a microusb cable.
 
 ### **Microusb Upload**
 
