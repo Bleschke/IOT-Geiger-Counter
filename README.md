@@ -10,7 +10,7 @@ Brian Leschke 2017
 
 This project utilizes an Adafruit Feather Huzzah esp8266, neopixels, and a Feather OLED to display radiation in uS/hr, CPS, and CPM. Information will display on an oled and a webpage. 
 
-An Adafruit Feather Huzzah programmed with the Arduino Software using an FTDI cable will attempt to connect to the specified wifi network and geiger counter. If successful, information will populate on the webpage and the oled screen. 
+An Adafruit Feather Huzzah programmed with the Arduino Software using an microusb cable will attempt to connect to the specified wifi network and geiger counter. If successful, information will populate on the webpage and the oled screen. 
 
 Project Breakdown:
 * Neopixels
@@ -66,12 +66,12 @@ The following libraries are required for this project:
         
 ## **Uploading**
 
-The code can be uploaded to the ESP8266 in two ways, either by OTA (over-the-air) updates or by a serial (FTDI cable) connection.
+The code can be uploaded to the ESP8266 in two ways, either by OTA (over-the-air) updates or a microusb cable (hardwire) connection.
 Users will need to initially upload the code using an FTDI cable.
 
-### **FTDI Upload**
+### **Microusb Upload**
 
-This method must be used in the initial flashing of the ESP8266. An FTDI or UART cable has 6 pins.
+This method must be used in the initial flashing of the ESP8266.
 Every time the you want to flash the ESP8266, you will need to do the following to enter the bootloader mode:
 
   1. Press and hold the RESET button.
