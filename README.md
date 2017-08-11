@@ -14,12 +14,12 @@ An Adafruit Feather Huzzah programmed with the Arduino Software using an FTDI ca
 
 Project Breakdown:
 * Neopixels
-    * Warning for radiation levels over 500 CPM (Blinks with detection)
-      * Blinks Blue   (1-99 CPM)
-      * Blinks Green  (100-299 CPM)
-      * Blinks Yellow (300-499 CPM)
-      * Blinks Orange (500-699 CPM)
-      * Blinks Red    (>700 CPM)
+    * Warning for radiation levels (Blinks with detection)
+      * Blinks Blue   (1-49 CPM)
+      * Blinks Green  (50-99 CPM)
+      * Blinks Yellow (100-149 CPM)
+      * Blinks Orange (150-499 CPM)
+      * Blinks Red    (>500 CPM)
 * OLED
     * Displays radiation levels
     * CPM - counts per minute
