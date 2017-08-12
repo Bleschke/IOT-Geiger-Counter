@@ -5,8 +5,15 @@ Brian Leschke 2017
  
 - Update 8/9/2017:  Formed project idea
 - Update 8/11/2017: Geiger Counter built
-- Update 8/12/2017: Started migrating and writing code.
+- Update 8/12/2017: Merge and custom code completed! Adafruit Parts built. Working Release!
 -
+NOTE: Personal webpage not yet implemented. This may be done in the future. 
+
+Future Ideas
+- WiFi signal strength meter
+- Personal webpage displaying graphs and charts
+- Time display
+- GPS logging
 
 ## **Overview**
 
@@ -17,7 +24,7 @@ An Adafruit Feather Huzzah programmed with the Arduino Software using an microus
 Project Breakdown:
 * Neopixels
     * Warning for radiation levels (Blinks with detection)
-      * Blinks Indigo (1-49 CPM
+      * Blinks Indigo (1-49 CPM)
       * Blinks Blue   (50-99 CPM)
       * Blinks Green  (100-149 CPM)
       * Blinks Yellow (150-299 CPM)
@@ -95,6 +102,6 @@ If for some reason, the network ESP8266 network configuration is incorrect, the 
 This kit converts electricity into high voltage for the Geiger Tube (SBM-20). I am not responsible and liable for any harm or damage done to you, others around you, or property of any kind. 
         
 ## **Recognition and Credit**
-This project will use the code from [SyncChannel] (https://gist.github.com/SyncChannel/ffe320953fa26d3ab9b5).
-My credit goes to them! 
+This project will use the code from Dan Watson [SyncChannel] (https://gist.github.com/SyncChannel/ffe320953fa26d3ab9b5).
+Most of my credit goes to him! 
 
