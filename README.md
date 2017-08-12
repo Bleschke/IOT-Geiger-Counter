@@ -79,16 +79,9 @@ The following libraries are required for this project:
 The code can be uploaded to the ESP8266 in two ways, either by OTA (over-the-air) updates or a microusb cable (hardwire) connection.
 Users will need to initially upload the code using a microusb cable.
 
-### **Microusb Upload**
+### **MicroUSB Upload**
 
-This method must be used in the initial flashing of the ESP8266.
-Every time the you want to flash the ESP8266, you will need to do the following to enter the bootloader mode:
-
-  1. Press and hold the RESET button.
-  2. Press and hold the GPIO0 button.
-  3. Release the RESET button and continue to hold the GPIO0 button.
-  4. Release the GPIO0 button (you should see a faint red glow from the GPIO0 LED).
-  
+This method must be used in the initial flashing of the ESP8266.  
 
 ### **OTA Upload**
 
