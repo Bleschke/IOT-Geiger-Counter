@@ -60,7 +60,7 @@ The following libraries are required for this project:
   * ArduinoJson
   * Adafruit_Neopixel
   * ESP8266WiFi
-  * EspSoftSerialRx
+  * [EspSoftSerialRx](https://github.com/scottwday/EspSoftSerial)
   * Adafruit_SSD1306
   * NTPClient
   * [Adafuit LED Backpack](https://github.com/adafruit/Adafruit-LED-Backpack-Library)
