@@ -17,16 +17,18 @@ An Adafruit Feather Huzzah programmed with the Arduino Software using an microus
 Project Breakdown:
 * Neopixels
     * Warning for radiation levels (Blinks with detection)
-      * Blinks Blue   (1-49 CPM)
-      * Blinks Green  (50-99 CPM)
-      * Blinks Yellow (100-149 CPM)
-      * Blinks Orange (150-499 CPM)
-      * Blinks Red    (>500 CPM)
+      * Blinks Indigo (1-49 CPM
+      * Blinks Blue   (50-99 CPM)
+      * Blinks Green  (100-149 CPM)
+      * Blinks Yellow (150-299 CPM)
+      * Blinks Orange (300-499 CPM)
+      * Blinks Red    (500-749 CPM)
+      * Blinks White  (>750 CPM)
 * OLED
     * Displays radiation levels
       * CPM - counts per minute
       * CPS - counts per second
-      * uS/hr - microSievert
+      * µS/hr - microSievert
 * Webpage
     * Displays radiation information
         * Graphs
