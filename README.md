@@ -3,8 +3,9 @@ An Adafruit Feather Huzzah with a Feather OLED expansion will be connected to a 
 
 Brian Leschke 2017
  
-- Update 8/9/2017: Formed project idea
+- Update 8/9/2017:  Formed project idea
 - Update 8/11/2017: Geiger Counter built
+- Update 8/12/2017: Started migrating and writing code.
 -
 
 ## **Overview**
@@ -92,6 +93,6 @@ If for some reason, the network ESP8266 network configuration is incorrect, the 
 This kit converts electricity into high voltage for the Geiger Tube (SBM-20). I am not responsible and liable for any harm or damage done to you, others around you, or property of any kind. 
         
 ## **Recognition and Credit**
-This project will combine the code from users [SynchChannel] (https://gist.github.com/SyncChannel/ffe320953fa26d3ab9b5) and [dmainmon] (https://github.com/dmainmon/Geiger-Counter-IoT).
-Most of the credit goes to them. 
+This project will use the code from [SyncChannel] (https://gist.github.com/SyncChannel/ffe320953fa26d3ab9b5).
+My credit goes to them! 
 
