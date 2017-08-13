@@ -4,6 +4,7 @@
 * Adafruit Feather Huzzah IoT Geiger Counter 
 * An Adafruit Feather Huzzah with a Feather OLED expansion will be connected to a MightyOhm Geiger Counter (kit). 
 * The Feather Huzzah is programmed to display uS/hr, CPS, and CPM on both a webpage and the oled screen. 
+* This is a modified version. Initial version created by Dan Watson.
 * Version 1.0 
 *  
 * 
@@ -21,7 +22,6 @@
 *  
 *  
 **/
-
 
 #include <SPI.h>
 #include <Wire.h>
@@ -53,32 +53,22 @@
 // Create an ESP8266 WiFiClient class to connect to the MQTT server.
 WiFiClient client;
 
-// Store the MQTT server, username, and password in flash memory.
-// This is required for using the Adafruit MQTT library.
-const char MQTT_SERVER[] PROGMEM    = AIO_SERVER;
-const char MQTT_USERNAME[] PROGMEM  = AIO_USERNAME;
-const char MQTT_PASSWORD[] PROGMEM  = AIO_KEY;
-
 // Setup the MQTT client class by passing in the WiFi client and MQTT server and login details.
-Adafruit_MQTT_Client mqtt(&client, MQTT_SERVER, AIO_SERVERPORT, MQTT_USERNAME, MQTT_PASSWORD);
+Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
 
 /****************************** Feeds ***************************************/
 
 // Modify these feed names to match what you created on Adafruit IO
+Adafruit_MQTT_Publish cpsfeed = Adafruit_MQTT_Publish(&mqtt, AIO_USERNAME "/feeds/GeigerCPS");
 
-const char CPS_FEED[] PROGMEM = AIO_USERNAME "/feeds/GeigerCPS";
-Adafruit_MQTT_Publish cpsfeed = Adafruit_MQTT_Publish(&mqtt, CPS_FEED);
+Adafruit_MQTT_Publish cpmfeed = Adafruit_MQTT_Publish(&mqtt, AIO_USERNAME "/feeds/GeigerCPM");
 
-const char CPM_FEED[] PROGMEM = AIO_USERNAME "/feeds/GeigerCPM";
-Adafruit_MQTT_Publish cpmfeed = Adafruit_MQTT_Publish(&mqtt, CPM_FEED);
-
-const char SIEVERTS_FEED[] PROGMEM = AIO_USERNAME "/feeds/GeigerSieverts";
-Adafruit_MQTT_Publish sievertsfeed = Adafruit_MQTT_Publish(&mqtt, SIEVERTS_FEED);
+Adafruit_MQTT_Publish sievertsfeed = Adafruit_MQTT_Publish(&mqtt, AIO_USERNAME "/feeds/GeigerSieverts");
 
 /****************************** NeoPixel Setup ******************************/
 
 // ** Neopixel Setup **
-#define PIN            4            // Pin used for Neopixel communication
+#define PIN            12          // Pin used for Neopixel communication
 #define NUMPIXELS      1           // Number of Neopixels connected to Arduino
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
@@ -121,7 +111,12 @@ bool geigerConnected = false;
 uint8_t publishCounter = 0;
 bool publishStatus = false;
 
+
 // ---------- CONFIGURATION - DO NOT MODIFY ----------
+// Bug workaround for Arduino 1.6.x, it seems to need a function declaration
+// for some reason (only affects ESP8266, likely an arduino-builder bug).
+void MQTT_connect();
+
 void setup()
 {
   // String from geiger counter will be echoed on USB Serial
@@ -136,6 +131,8 @@ void setup()
   pinMode(buttonC, INPUT_PULLUP);
   pinMode(buttonC, INPUT_PULLUP);
   
+  display.display();
+  delay(2000);
   display.clearDisplay();
   display.setTextColor(WHITE);
   display.setTextSize(1);
@@ -158,7 +155,7 @@ void setup()
 
   Serial.println("WiFi connected");
   Serial.println("IP address: "); Serial.println(WiFi.localIP());
-  
+
 // ---------- CONFIGURATION - DO NOT MODIFY ----------
 
 // ---------- OTA CONFIGURATION - DO NOT MODIFY ----------
@@ -167,7 +164,7 @@ void setup()
   //ArduinoOTA.setPort(8266);
 
   // Hostname defaults to esp8266-[ChipID]
-  // ArduinoOTA.setHostname("myesp8266");
+  // ArduinoOTA.setHostname("ESP_GEIGER");
 
   // No authentication by default
   ArduinoOTA.setPassword((const char *)"OTA_GEIGERPASS");    // OTA auth password
@@ -251,6 +248,7 @@ void setup()
   Serial.println("OTA Ready");
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
+  /*
   display.clearDisplay();
   display.setTextSize(1);
   display.setCursor(0,8);
@@ -258,12 +256,17 @@ void setup()
   display.println(WiFi.localIP());
   display.display();
   delay(1000);
+  */
 }
 // ---------- OTA CONFIGURATION - DO NOT MODIFY ----------
 
 // ---------- ESP 8266 FUNCTIONS - SOME CAN BE REMOVED ----------
 
-void GeigerCheck() {
+void loop()
+{
+  // ** Handle OTA server. **
+  ArduinoOTA.handle();
+  
   // Check if a button is pressed and change mode accordingly
   
   bool gotButton = false;
@@ -380,6 +383,7 @@ void GeigerCheck() {
       // Lots of potential to modify/improve this. You could do cool stuff like graphing!
       switch (mode) {
         case 1: // Stats
+          Serial.print("display A");
           display.setTextColor(WHITE);
           display.setTextSize(1);
           display.clearDisplay();
@@ -394,6 +398,7 @@ void GeigerCheck() {
           display.display();
           break;
         case 2: // CPM only in large text for greater visibility
+          Serial.print("display B");
           display.setTextColor(WHITE);
           display.clearDisplay();
           display.setTextSize(1);
@@ -405,6 +410,7 @@ void GeigerCheck() {
           display.display();
           break;
         case 3: // Status of Wi-Fi, publishing, and IP address
+          Serial.print("display C");
           display.setTextSize(1);
           display.setTextColor(WHITE);
           display.clearDisplay();
@@ -435,14 +441,18 @@ void GeigerCheck() {
     bool publishResults = true;
     if (!cpsfeed.publish(cps))
       publishResults = false;
+      Serial.println("cps publish failed");
     delay(10);
     if (!cpmfeed.publish(cpm))
       publishResults = false;
+      Serial.println("cpm publish failed");
     delay(10);
     if (!sievertsfeed.publish(sieverts))
       publishResults = false;
+      Serial.println("sieverts publish failed");
     publishStatus = publishResults;
-  } 
+  }
+  Serial.println("Data published");
 }
 
 // Function to connect and reconnect as necessary to the MQTT server.
@@ -475,22 +485,4 @@ void colorWipe(uint32_t c, uint8_t wait) {
       delay(wait);
   }
 }
-
 // ---------- ESP 8266 FUNCTIONS - SOME CAN BE REMOVED ----------
-
-void loop()
-{
-  // ---------- USER CODE GOES HERE ----------
-  
-  // ** Handle OTA server. **
-  ArduinoOTA.handle();
-
-  // ** Handle Geiger Counter Check **
-  GeigerCheck();
-
-  // ** Receive Time (NTP) **
-  //GetTime();
-
-  // ---------- USER CODE GOES HERE ----------
-  yield();
-}
