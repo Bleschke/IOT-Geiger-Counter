@@ -9,6 +9,7 @@ Brian Leschke 2017
 NOTE: Personal webpage not yet implemented. This may be done in the future. 
 
 Future Ideas
+- User prompt on startup on whether or not to connect to wifi and upload data to Adafruit.io
 - WiFi signal strength meter
 - Personal webpage displaying graphs and charts
 - Time display
