@@ -1,9 +1,9 @@
 /*  
 * Brian Leschke 
-* August 12, 2017 
+* August 13, 2017 
 * Adafruit Feather Huzzah IoT Geiger Counter 
 * An Adafruit Feather Huzzah with a Feather OLED expansion will be connected to a MightyOhm Geiger Counter (kit). 
-* The Feather Huzzah is programmed to display uS/hr, CPS, and CPM on both a webpage and the oled screen. 
+* The Feather Huzzah is programmed to display uS/hr, CPS, and CPM on both a webpage and the oled screen.
 * This is a modified version. Initial version created by Dan Watson.
 * Version 1.0 
 *  
@@ -19,9 +19,11 @@
 * 8/9/2017  - Formed idea, sketched project on paper. Supplies purchased 
 * 8/11/2017 - Geiger Counter built 
 * 8/12/2017 - Merge and custom code completed! Adafruit Parts built. Working Release!
+* 8/13/2017 - Further modified and simplified code. 
 *  
 *  
 **/
+
 
 #include <SPI.h>
 #include <Wire.h>
@@ -59,6 +61,7 @@ Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO
 /****************************** Feeds ***************************************/
 
 // Modify these feed names to match what you created on Adafruit IO
+
 Adafruit_MQTT_Publish cpsfeed = Adafruit_MQTT_Publish(&mqtt, AIO_USERNAME "/feeds/GeigerCPS");
 
 Adafruit_MQTT_Publish cpmfeed = Adafruit_MQTT_Publish(&mqtt, AIO_USERNAME "/feeds/GeigerCPM");
@@ -68,7 +71,7 @@ Adafruit_MQTT_Publish sievertsfeed = Adafruit_MQTT_Publish(&mqtt, AIO_USERNAME "
 /****************************** NeoPixel Setup ******************************/
 
 // ** Neopixel Setup **
-#define PIN            12          // Pin used for Neopixel communication
+#define PIN            15            // Pin used for Neopixel communication
 #define NUMPIXELS      1           // Number of Neopixels connected to Arduino
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
@@ -111,11 +114,10 @@ bool geigerConnected = false;
 uint8_t publishCounter = 0;
 bool publishStatus = false;
 
-
 // ---------- CONFIGURATION - DO NOT MODIFY ----------
 // Bug workaround for Arduino 1.6.x, it seems to need a function declaration
 // for some reason (only affects ESP8266, likely an arduino-builder bug).
-void MQTT_connect();
+//void MQTT_connect();
 
 void setup()
 {
@@ -130,7 +132,8 @@ void setup()
   pinMode(buttonA, INPUT_PULLUP);
   pinMode(buttonC, INPUT_PULLUP);
   pinMode(buttonC, INPUT_PULLUP);
-  
+ 
+ 
   display.display();
   delay(2000);
   display.clearDisplay();
@@ -147,15 +150,24 @@ void setup()
   Serial.println(WLAN_SSID);
 
   WiFi.begin(WLAN_SSID, WLAN_PASS);
+  int waitCount = 0;
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
+    
+    waitCount++;
+    if (waitCount > 20)
+    {
+      Serial.println("Connection Failed! Rebooting...");
+      delay(2000);
+      ESP.restart();
+    }
   }
   Serial.println();
 
   Serial.println("WiFi connected");
   Serial.println("IP address: "); Serial.println(WiFi.localIP());
-
+  
 // ---------- CONFIGURATION - DO NOT MODIFY ----------
 
 // ---------- OTA CONFIGURATION - DO NOT MODIFY ----------
@@ -164,7 +176,7 @@ void setup()
   //ArduinoOTA.setPort(8266);
 
   // Hostname defaults to esp8266-[ChipID]
-  // ArduinoOTA.setHostname("ESP_GEIGER");
+  // ArduinoOTA.setHostname("myesp8266");
 
   // No authentication by default
   ArduinoOTA.setPassword((const char *)"OTA_GEIGERPASS");    // OTA auth password
@@ -248,26 +260,14 @@ void setup()
   Serial.println("OTA Ready");
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
-  /*
-  display.clearDisplay();
-  display.setTextSize(1);
-  display.setCursor(0,8);
-  display.println("WiFi: Connected");
-  display.println(WiFi.localIP());
-  display.display();
-  delay(1000);
-  */
 }
 // ---------- OTA CONFIGURATION - DO NOT MODIFY ----------
 
 // ---------- ESP 8266 FUNCTIONS - SOME CAN BE REMOVED ----------
 
-void loop()
-{
-  // ** Handle OTA server. **
-  ArduinoOTA.handle();
-  
+void GeigerCheck() {
   // Check if a button is pressed and change mode accordingly
+  yield();
   
   bool gotButton = false;
   
@@ -296,6 +296,8 @@ void loop()
 
   // Monitor the serial connection from the geiger counter.
   // If it is absent for > 3 seconds, display a warning to the user
+  
+  /*
   if (millis() > (geigerTimeout + 3000) && geigerConnected == true)
   {
     geigerConnected = false;
@@ -307,6 +309,8 @@ void loop()
     display.println("NOT CONNECTED!");
     display.display();
   }
+
+*/
 
   // End of serial connection monitoring
 
@@ -383,7 +387,6 @@ void loop()
       // Lots of potential to modify/improve this. You could do cool stuff like graphing!
       switch (mode) {
         case 1: // Stats
-          Serial.print("display A");
           display.setTextColor(WHITE);
           display.setTextSize(1);
           display.clearDisplay();
@@ -398,7 +401,6 @@ void loop()
           display.display();
           break;
         case 2: // CPM only in large text for greater visibility
-          Serial.print("display B");
           display.setTextColor(WHITE);
           display.clearDisplay();
           display.setTextSize(1);
@@ -410,7 +412,6 @@ void loop()
           display.display();
           break;
         case 3: // Status of Wi-Fi, publishing, and IP address
-          Serial.print("display C");
           display.setTextSize(1);
           display.setTextColor(WHITE);
           display.clearDisplay();
@@ -441,23 +442,20 @@ void loop()
     bool publishResults = true;
     if (!cpsfeed.publish(cps))
       publishResults = false;
-      Serial.println("cps publish failed");
     delay(10);
     if (!cpmfeed.publish(cpm))
       publishResults = false;
-      Serial.println("cpm publish failed");
     delay(10);
     if (!sievertsfeed.publish(sieverts))
       publishResults = false;
-      Serial.println("sieverts publish failed");
     publishStatus = publishResults;
-  }
-  Serial.println("Data published");
+  } 
 }
 
 // Function to connect and reconnect as necessary to the MQTT server.
 // Should be called in the loop function and it will take care if connecting.
 void MQTT_connect() {
+  yield();
   int8_t ret;
 
   // Stop if already connected.
@@ -485,4 +483,22 @@ void colorWipe(uint32_t c, uint8_t wait) {
       delay(wait);
   }
 }
+
 // ---------- ESP 8266 FUNCTIONS - SOME CAN BE REMOVED ----------
+
+void loop()
+{
+  // ---------- USER CODE GOES HERE ----------
+  
+  // ** Handle OTA server. **
+  ArduinoOTA.handle();
+
+  // ** Handle Geiger Counter Check **
+  GeigerCheck();
+
+  // ** Receive Time (NTP) **
+  //GetTime();
+
+  // ---------- USER CODE GOES HERE ----------
+  yield();
+}
