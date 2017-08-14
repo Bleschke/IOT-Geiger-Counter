@@ -5,7 +5,7 @@ Brian Leschke 2017
 - Update 8/9/2017:  Formed project idea
 - Update 8/11/2017: Geiger Counter built
 - Update 8/12/2017: Merge and custom code completed! Adafruit Parts built. Working Release!
-- 8/13/2017 - Further modified and simplified code. 
+- Update 8/13/2017: Further modified and simplified code. 
 
 NOTE: Personal webpage not yet implemented. This may be done in the future. 
 
