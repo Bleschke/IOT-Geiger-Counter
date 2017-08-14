@@ -55,6 +55,8 @@ You will need:
 6. Python 2.7.x installed on your operating system (used for OTA updates).
 7. FTDI cable (https://www.sparkfun.com/products/9717)
 8. Lithium Ion Battery Pack - optional (http://adafru.it/2011)
+9. Follow build instructions at: http://mightyohm.com/blog/products/geiger-counter/
+10. Follow modification instructions at: https://syncchannel.blogspot.com/2016/01/wi-fi-and-oled-upgrade-for-mightyohm.html
 
 
 ### **Usage**
